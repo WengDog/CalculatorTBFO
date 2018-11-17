@@ -21,13 +21,13 @@ float executePower(float x);
 
 // Implementasi perintah-perintah
 
-boolean IsDigit(char c)
+boolean IsDigit(char c) // IsNumber
 // Mengembalikan nilai true jika char tersebut adalah digit
 {
   return (c >= '0' && c <= '9');
 }
 
-float charTofloat(char c)
+float charTofloat(char c) //strtodob
 // Mengganti karkater ke float
 {
   return (c - '0');
