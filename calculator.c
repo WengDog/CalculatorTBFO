@@ -1,242 +1,179 @@
+#include "calculator.h"
 #include <stdio.h>
-#include <math.h>
 #include <string.h>
-#include "boolean.h"
 
-#define Fail -99999
-#define MathError -99998
-char *now;
-
-// List perintah
-boolean IsDigit(char c);
-float charTofloat(char c);
-boolean FailedInput(float x);
-float checksign();
-float digit();
-float plusminus();
-float timesdiv();
-float brackets();
-float power();
-float executePower(float x);
-
-// Implementasi perintah-perintah
-
-boolean IsDigit(char c) // IsNumber
-// Mengembalikan nilai true jika char tersebut adalah digit
+// PREDIKAT
+boolean IsDigit(char X)
+// Mengecek apakah karakter tersebut adalah titik
 {
-  return (c >= '0' && c <= '9');
+  // KAMUS LOKAL
+  int N;
+  // ALGORITMA
+  N = X - '0';
+  return ((N >= 0) && (N <= 9));
 }
-
-float charTofloat(char c) //strtodob
-// Mengganti karkater ke float
+boolean IsOperator(char X)
+// Mengecek apakah karakter tersebut adalah operator
 {
-  return (c - '0');
+  // KAMUS LOKAL
+  // ALGORITMA
+  return (X == Operator);
 }
-
-boolean FailedInput(float x)
-// Memberikan nilai true jika x adalah Fail
+boolean IsPlusMin (char X)
+// Mengecek apakah karakter tersebut '+' atau '-'
 {
-  return (x == Fail);
+  // KAMUS LOKAL
+  // ALGORITMA
+  return (X == '+' || X == '-');
 }
-
-float checksign()
-// Mengecek apakah digit tersebut memiliki nilai negatif, tanda kurung
-// atau hanya bilangan biasa saja
+boolean IsTimeDivide (char X)
+// Mengecek apakah karakter tersebut '*' atau '/'
 {
-  float checker;
-
-  if (*now == '-')
+  // KAMUS LOKAL
+  // ALGORITMA
+  return (X == '*' || X == '/');
+}
+boolean IsPower (char X)
+// Mengecek apakah karakter tersebut '^'
+{
+  // KAMUS LOKAL
+  // ALGORITMA
+  return (X == '^');
+}
+boolean IsBukaKurung (char X)
+// Mengecek apakah karakter tersebut '('
+{
+  // KAMUS LOKAL
+  // ALGORITMA
+  return (X == '(');
+}
+boolean IsTutupKurung (char X)
+// Mengecek apakah karakter tersebut '}'
+{
+  // KAMUS LOKAL
+  // ALGORITMA
+  return (X == ')');
+}
+boolean IsNegatif (char X)
+// Mengecek apakah karakter tersebut '-'
+{
+  // KAMUS LOKAL
+  // ALGORITMA
+  return (X == '-');
+}
+boolean IsPoint (char X)
+// Mengecek apakah karakter tersebut '.'
+{
+  // KAMUS LOKAL
+  // ALGORITMA
+  return (X == '.');
+}
+boolean IsEnd (char X)
+// Mengecek apakah karakter tersebut '\0'
+{
+  // KAMUS LOKAL
+  // ALGORITMA
+  return (X == '\0');
+}
+boolean IsStillValid (char *str, int *idx)
+// Mengecek apakah karakter tersebut masih valid
+{
+  // KAMUS LOKAL
+  // ALGORITMA
+  if (*idx > strlen(str))
   {
-    now++;
-    checker = digit();
-    if (checker != Fail)
-    {
-      return ((-1) * checker);
-    }
-    else
-    {
-      return (Fail);
-    }
-  }
-  else if (*now == '(')
-  {
-    now++;
-    return (brackets());
+    return false;
   }
   else
   {
-    return (digit());
+    return (str[*idx] == ValidInput);
   }
 }
 
-float digit ()
-// Menghasilkan digit angka pada bilangan
+// OPERATOR
+void Count (char *str, int *idx, float *returnValue, boolean *valid)
+// Menghitung hasil dari string input
 {
-  float temp = 0;
-  if (IsDigit(*now))
+  // KAMUS LOKAL
+  float temp;
+
+  // ALGORITMA
+  CreateNumber (str, idx, returnValue, valid);
+}
+
+void CreateNumber (char *str, int *idx, float *returnValue, boolean *valid)
+// Mengembalikan angka yang dimiliki dari serian angka
+{
+  // KAMUS LOKAL
+  float temp, multiplier;
+
+  // ALGRORITMA
+  temp = 0;
+  while (IsDigit(str[*idx]))
   {
-    while (IsDigit(*now))
+    temp = 10 * temp + (str[*idx] - '0');
+    (*idx)++;
+  }
+  if (IsPoint(str[*idx]))
+  {
+    (*idx)++;
+    if (!IsDigit(str[*idx]))
     {
-      temp = (temp*10) + charTofloat(*now);
-      now++;
+      *returnValue = Nil;
+      *valid = false;
     }
-    if (*now == '.')
+    else
     {
-      now++;
-      float multiplier = 0.1;
-      if (!IsDigit(*now))
+      multiplier = 0.1;
+      while (IsDigit(str[*idx]))
       {
-        return (Fail);
+        temp += multiplier * (str[*idx] - '0');
+        multiplier /= 10;
+        (*idx)++;
+      }
+      if (!IsOperator(str[*idx]) && !IsEnd(str[*idx]))
+      {
+        *returnValue = Nil;
+        *valid = false;
       }
       else
       {
-        while (IsDigit(*now))
-        {
-          temp = temp + charTofloat(*now)*multiplier;
-          multiplier /= 10;
-          now++;
-        }
+        *returnValue = temp;
       }
     }
-    return (temp);
   }
   else
   {
-    printf("Invalid input. Input not digits\n");
-    return (Fail);
-  }
-}
-
-float plusminus ()
-// Menghasilkan hasil penjumlahan dan pengurangan
-{
-  float x = timesdiv();
-  if (FailedInput(x))
-  {
-    return (Fail);
-  }
-  else
-  {
-    while (*now == '+' || *now == '-')
+    if (!IsOperator(str[*idx]) && !IsEnd(str[*idx]))
     {
-      char opr = *now;
-      now++;
-      float y = timesdiv();
-      if (FailedInput(y))
-      {
-        return (Fail);
-      }
-      if (opr == '+')
-      {
-        x += y;
-      }
-      else
-      {
-        x -= y;
-      }
-    }
-    return x;
-  }
-}
-
-float timesdiv ()
-// Menghasilkan hasil perkalian dan pembagian
-{
-  float x = power();
-  if (FailedInput(x))
-  {
-    return (Fail);
-  }
-  while (*now == '*' || *now == '/')
-  {
-    char opr = *now;
-    now++;
-    float y = power();
-    if (FailedInput(y))
-    {
-      return (Fail);
-    }
-    if (opr == '*')
-    {
-      x *= y;
+      *returnValue = Nil;
+      *valid = false;
     }
     else
     {
-      x /= y;
-    }
-  }
-  return x;
-}
-
-float brackets ()
-// Menghasilkan hasil dari tanda kurung jika berhasil
-{
-  float res = plusminus();
-  if (*now != ')')
-  {
-    return Fail;
-  }
-  else
-  {
-    now++;
-    return res;
-  }
-}
-
-float power ()
-// Mengembalikan hasil perpangkatan dari sebuah bilangan
-{
-  float x = checksign();
-  if (*now == '^' && x != Fail)
-  {
-    now++;
-    x = executePower(x);
-  }
-  return (x);
-}
-
-float executePower (float x)
-// Membantu perpangkatan dengan pemanggilan rekursif
-{
-  float y = checksign();
-  if (y == Fail)          // Basis
-  {
-    return (Fail);
-  }
-  else if (*now != '^')   // Basis
-  {
-    return (pow(x,y));
-  }
-  else                    // Rekurens
-  {
-    now++;
-    float z = executePower(y);
-    if (z != Fail)
-    {
-      return (pow(x,z));
-    }
-    else
-    {
-      return (Fail);
+      *returnValue = temp;
     }
   }
 }
 
 int main ()
 {
-  char input[50];
-  printf("Masukkan operasi yang ingin dilakukan!\n");
-  scanf ("%s", input);
-  now = input;
+  // KAMUS
+  char str[50];
+  boolean valid;
+  int idx;
+  float res;
 
-  float count = plusminus();
-  if (count == Fail || *now != '\0')
-  {
-    printf("Failed input\n");
-  }
+  // ALGORITMA
+  printf("Masukkan string operasi!\n");
+  scanf ("%s", str);
+  valid = true;
+  idx = 0;
+  Count(str, &idx, &res, &valid);
+  if (valid)
+      printf("%.2f",res);
   else
-  {
-    printf("Result = %.2f", count);
-  }
+      printf("SINTAKS ERROR");
+
   return 0;
 }
