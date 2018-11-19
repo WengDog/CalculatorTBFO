@@ -5,7 +5,8 @@
 
 
 #define Error -99999.99
-#define MathError -99999.99
+#define MathError -99999.98
+
 extern char *P; // Akan digunakan sebagai penunjuk character
 extern boolean OpExist;
 
@@ -34,5 +35,7 @@ double Expn();
 double CalcPar();
 // Memproses dan menghasilkan hasil dari operasi bilangan dalam tanda kurung
 
+void ExpImg(double a, double b);
+//mencetak nilai akar bilangan minus
 
 #endif

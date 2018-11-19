@@ -5,6 +5,12 @@
 #include "boolean.h"
 #include "rgbcalculator.h"
 
+double charToDouble(char c)
+// Char to double
+{
+  return (c - '0');
+}
+
 boolean IsNumber(char p)
 {
     return(p >= '0' && p <= '9');
@@ -57,7 +63,7 @@ double GetNumber()
     {
         while (IsNumber(*P))
         {
-            f = (f*10) + strtod(P,NULL);
+            f = (f*10) + charToDouble(*P);
             // printf("f = %f\n",f);
             P++;
             // printf("P menunjuk ke : %c\n",*P);
@@ -65,6 +71,7 @@ double GetNumber()
         if (*P == '.')
         {
             P++;
+            double mul = 0.1;
             if (!IsNumber(*P))
             {
                 return (Error);
@@ -73,15 +80,12 @@ double GetNumber()
             {
                 while (IsNumber(*P))
                 {
-                    // printf("1. f = %f\n",f);
-                    // f = f + strtod(P,NULL)*mul;
-                    // mul /= 10;
+                    f = f + charToDouble(*P)*mul;
+                    mul /= 10;
                     P++;
-                    // printf("2. f = %f\n",f);
                 }
             }
         }
-        // printf("nilai f adalah : %f\n",f);
         return (f);
     }
     else
@@ -168,7 +172,7 @@ double OrderTwo()
         }
         else if (Op == '/')
         {
-            if(a == 0) // if divided by zero
+            if(b == 0) // if divided by zero
             {
                 return MathError;
             }
@@ -229,6 +233,10 @@ double CalcExp (double a)
     }
     else if (*P != '^')
     {
+        if ((0<b && b<1) && (a <0))
+        {
+            return MathError;
+        }
         return (pow(a,b));
     }
     else //Recurrence
@@ -247,3 +255,4 @@ double CalcExp (double a)
         }
     }
 }
+

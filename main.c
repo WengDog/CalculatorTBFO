@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "rgbcalculator.h"
+#include "rgbcalculator.c"
 #include "boolean.h"
 
 char *P;
@@ -30,7 +30,12 @@ int main ()
 
       if (result == MathError || *P != '\0')
       {
-        printf("Syntax Error\n");
+        printf("MATH ERROR\n");
+        printf("Please try again : ");
+      }
+      else if (result == Error || *P != '\0')
+      {
+        printf("SYNTAX ERROR\n");
         printf("Please try again : ");
       }
 
