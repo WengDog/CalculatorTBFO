@@ -104,6 +104,10 @@ double OrderOne()
     {
         return (Error);
     }
+    else if (a == MathError)
+    {
+        return (MathError);
+    }
     else
     {
         while ((*P == '+')||(*P == '-'))
@@ -120,6 +124,10 @@ double OrderOne()
             if (b == Error)
             {
                 return (Error);
+            }
+            else if (b == MathError)
+            {
+                return (MathError);
             }
 
             if (Op == '+')
@@ -147,6 +155,10 @@ double OrderTwo()
     {
         return (Error);
     }
+    else if (a == MathError)
+    {
+        return (MathError);
+    }
 
     while ((*P == '*') || (*P == '/'))
     {
@@ -164,6 +176,10 @@ double OrderTwo()
         if (b == Error)
         {
             return (Error);
+        }
+        else if (b == MathError)
+        {
+            return (MathError);
         }
 
         if (Op == '*')
@@ -194,8 +210,6 @@ double CalcPar()
     if (*P == ')')
     {
         P++;
-        // printf("setelah calcpar, p sekarang menunjuk ke : %c\n", *P );
-        // printf("fungsi clcpar mengemblikan a =  : %f\n", a );
         return a;
     }
     else
@@ -233,7 +247,7 @@ double CalcExp (double a)
     }
     else if (*P != '^')
     {
-        if ((0<b && b<1) && (a <0))
+        if (((0<b && b<1) || (-1<b && b<0)) && (a <0))
         {
             return MathError;
         }
@@ -248,6 +262,10 @@ double CalcExp (double a)
         if (c == Error)
         {
             return (Error);
+        }
+        else if (c == MathError)
+        {
+            return (MathError);
         }
         else
         {
