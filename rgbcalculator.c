@@ -6,7 +6,7 @@
 #include "rgbcalculator.h"
 
 boolean IsNumber(char p)
-{
+{1
     return(p >= '0' && p <= '9');
 }
 
@@ -40,6 +40,7 @@ double CheckNumber(char *p)
     else if (*P == '(')
     {
         P++;
+        // printf("calcpar dijalankan\n");
         return (CalcPar());
     }
     else
@@ -51,18 +52,19 @@ double CheckNumber(char *p)
 double GetNumber()
 {
     double f = 0;
-
+    // printf("P sekarang sedang menunjuk ke %c\n", *P );
     if (IsNumber(*P))
     {
         while (IsNumber(*P))
         {
             f = (f*10) + strtod(P,NULL);
+            // printf("f = %f\n",f);
             P++;
+            // printf("P menunjuk ke : %c\n",*P);
         }
         if (*P == '.')
         {
             P++;
-            double mul = 0.1;
             if (!IsNumber(*P))
             {
                 return (Error);
@@ -71,12 +73,15 @@ double GetNumber()
             {
                 while (IsNumber(*P))
                 {
-                    f = f + strtod(P,NULL)*mul;
-                    mul /= 10;
+                    // printf("1. f = %f\n",f);
+                    // f = f + strtod(P,NULL)*mul;
+                    // mul /= 10;
                     P++;
+                    // printf("2. f = %f\n",f);
                 }
             }
         }
+        // printf("nilai f adalah : %f\n",f);
         return (f);
     }
     else
@@ -86,7 +91,7 @@ double GetNumber()
 }
 
 double OrderOne()
-//Order of Addition and Subtraction Operation
+//Addition and Subtraction Operation
 {
     double a;
     a = OrderTwo();
@@ -106,7 +111,7 @@ double OrderOne()
             double b;
 
             b = OrderTwo();
-
+            // printf("nilai b adalah : %f\n",b);
             if (b == Error)
             {
                 return (Error);
@@ -120,6 +125,7 @@ double OrderOne()
             {
                 a = a - b;
             }
+            // printf("hasil a pada order a adlaah : %f\n",a);
         }
     return a;
     }
@@ -143,6 +149,8 @@ double OrderTwo()
 
         Op = *P;
 
+        P++;
+
         double b;
 
         b = Expn();
@@ -164,7 +172,7 @@ double OrderTwo()
             }
             else
             {
-                a = b / a;
+                a = a / b;
             }
         }
     }
@@ -180,6 +188,8 @@ double CalcPar()
     if (*P == ')')
     {
         P++;
+        // printf("setelah calcpar, p sekarang menunjuk ke : %c\n", *P );
+        // printf("fungsi clcpar mengemblikan a =  : %f\n", a );
         return a;
     }
     else
@@ -193,7 +203,8 @@ double Expn()
 {
     double a;
 
-    a = GetNumber();
+    a = CheckNumber(P);
+
 
     if ((*P == '^') && (a != Error))
     {
@@ -207,8 +218,8 @@ double CalcExp (double a)
 {
     double b;
 
-    b = GetNumber();
-
+    b = CheckNumber(P);
+    // printf("pada fungsi calcExp, b sekrang bernilai : %f\n",b);
     if (b == Error)
     {
         return (Error);

@@ -1,9 +1,14 @@
+#include "boolean.h"
+
 #ifndef RGBCALCULATOR_H_INCLUDED
 #define RGBCALCULATOR_H_INCLUDED
 
+
 #define Error -99999.99
 #define MathError -99999.99
-char *P; // Merupakan alamat sebuah string
+extern char *P; // Akan digunakan sebagai penunjuk character
+extern boolean OpExist;
+
 
 boolean IsNumber(char p);
 // Menghasilkan true jika karakter merupakan angka [0..9]
