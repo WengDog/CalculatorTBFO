@@ -6,7 +6,7 @@
 #include "rgbcalculator.h"
 
 boolean IsNumber(char p)
-{1
+{
     return(p >= '0' && p <= '9');
 }
 
@@ -104,6 +104,7 @@ double OrderOne()
     {
         while ((*P == '+')||(*P == '-'))
         {
+            OpExist = true;
             char Op;
             Op = *P;
             P++;
@@ -145,6 +146,7 @@ double OrderTwo()
 
     while ((*P == '*') || (*P == '/'))
     {
+        OpExist = true;
         char Op;
 
         Op = *P;
@@ -208,6 +210,7 @@ double Expn()
 
     if ((*P == '^') && (a != Error))
     {
+        OpExist = true;
         P++;
         a = CalcExp(a);
     }
