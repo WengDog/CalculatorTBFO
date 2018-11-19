@@ -25,7 +25,7 @@ int main ()
   scanf("%s",InputString);
   while(strcmp(InputString,"exit")){
     P = InputString;
-    double result = OrderOne();
+    double result = OperationA();
     if(OpExist){
 
       if (result == MathError || *P != '\0')

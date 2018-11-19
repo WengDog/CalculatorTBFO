@@ -16,7 +16,7 @@ boolean IsNumber(char p)
     return(p >= '0' && p <= '9');
 }
 
-double CheckNumber(char *p)
+double CheckSymbol(char *p)
 {
     float check;
     char *prev;
@@ -94,11 +94,11 @@ double GetNumber()
     }
 }
 
-double OrderOne()
+double OperationA()
 //Addition and Subtraction Operation
 {
     double a;
-    a = OrderTwo();
+    a = OperationB();
 
     if (a == Error)
     {
@@ -119,7 +119,7 @@ double OrderOne()
 
             double b;
 
-            b = OrderTwo();
+            b = OperationB();
             // printf("nilai b adalah : %f\n",b);
             if (b == Error)
             {
@@ -144,7 +144,7 @@ double OrderOne()
     }
 }
 
-double OrderTwo()
+double OperationB()
 //Order of Multiplication and Division Operation
 {
     double a;
@@ -206,7 +206,7 @@ double CalcPar()
 {
     double a;
 
-    a = OrderOne();
+    a = OperationA();
     if (*P == ')')
     {
         P++;
@@ -223,7 +223,7 @@ double Expn()
 {
     double a;
 
-    a = CheckNumber(P);
+    a = CheckSymbol(P);
 
 
     if ((*P == '^') && (a != Error))
@@ -239,7 +239,7 @@ double CalcExp (double a)
 {
     double b;
 
-    b = CheckNumber(P);
+    b = CheckSymbol(P);
     // printf("pada fungsi calcExp, b sekrang bernilai : %f\n",b);
     if (b == Error)
     {
@@ -273,4 +273,3 @@ double CalcExp (double a)
         }
     }
 }
-
