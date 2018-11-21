@@ -28,12 +28,12 @@ int main ()
     double result = OperationA();
     if(OpExist){
 
-      if (result == MathError || *P != '\0')
+      if (result == MathError)
       {
         printf("MATH ERROR\n");
         printf("Please try again : ");
       }
-      else if (result == Error || *P != '\0')
+      else if (result == Error)
       {
         printf("SYNTAX ERROR\n");
         printf("Please try again : ");
